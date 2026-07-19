@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>群岛前线 / Archipelago Frontline</title>
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+  <div id="game"></div>
+  <div id="hud" class="hidden">
+    <div id="score">得分 / Score: <span id="scoreValue">0</span></div>
+    <div id="objective">据点 / Objective: <span id="objectiveValue">中立 / Neutral</span></div>
+    <div id="health">生命 / Health: <span id="healthValue">100</span></div>
+    <div id="ammo">弹药 / Ammo: <span id="ammoValue">30 / 120</span></div>
+    <div id="vehicle">状态 / Status: <span id="vehicleValue">步兵 / Infantry</span></div>
+    <div id="crosshair">+</div>
+    <div id="message"></div>
+  </div>
+  <div id="overlay" class="visible">
+    <main class="panel">
+      <p class="eyebrow">联合作战网页原型 / Combined-Arms Web Prototype</p>
+      <h1>群岛前线<br><span>Archipelago Frontline</span></h1>
+      <p>进入一个程序化岛屿训练场，消灭敌人并占领中央据点。靠近车辆后按 E 可进入或离开。</p>
+      <p>Enter a procedural island training ground, eliminate enemies, and capture the central objective. Press E near the vehicle to enter or exit.</p>
+      <div class="controls">
+        <div><b>移动 / Move</b><span>WASD · Shift · Space</span></div>
+        <div><b>战斗 / Combat</b><span>Mouse · Left click · R</span></div>
+        <div><b>载具 / Vehicle</b><span>E · WASD</span></div>
+        <div><b>鼠标 / Pointer</b><span>Esc to release</span></div>
+      </div>
+      <button id="startButton">进入战场 / Enter Battlefield</button>
+      <p class="small">本项目使用原创程序化几何体，不包含任何商业游戏资产。</p>
+      <p class="small">This project uses original procedural geometry and contains no commercial-game assets.</p>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="src/game.js"></script>
+</body>
+</html>
