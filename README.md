@@ -1,57 +1,66 @@
 # 群岛前线：联合作战网页 FPS 原型
 # Archipelago Frontline: Combined-Arms Web FPS Prototype
 
-这是一个使用 Three.js 构建的浏览器端第一人称射击原型，目标是验证“步兵、AI 敌人、据点争夺与载具”能否在轻量网页环境中形成可玩的联合作战循环。
+![Status](https://img.shields.io/badge/status-playable%20prototype-2f81f7)
+![Three.js](https://img.shields.io/badge/Three.js-browser%20runtime-black)
+![Language](https://img.shields.io/badge/docs-bilingual-d8aa56)
+![License](https://img.shields.io/badge/license-MIT-3fb950)
 
-This is a browser-based first-person shooter prototype built with Three.js. Its goal is to test whether infantry combat, AI enemies, capture objectives, and vehicles can form a playable combined-arms loop in a lightweight web environment.
+这是一个使用原生 JavaScript 与 Three.js 构建的浏览器端第一人称射击原型，用于验证步兵、AI 敌人、据点争夺与简化载具能否形成轻量但完整的联合作战循环。
 
-本仓库是公开展示与后续迭代版本，不是商业游戏，也不是《战地》系列的复制品；仓库不包含该系列的名称、地图、模型、音频、标识或其他受版权保护素材。
+This is a browser-based first-person shooter prototype built with vanilla JavaScript and Three.js. It tests whether infantry combat, AI enemies, capture objectives, and simplified vehicles can form a lightweight but complete combined-arms loop.
 
-This repository is a public showcase and iteration version, not a commercial game and not a copy of the Battlefield series; it contains none of that series’ names, maps, models, audio, logos, or other copyrighted assets.
+> **项目状态：** 当前版本是可运行的垂直切片，而不是商业游戏或任何现有游戏系列的复制品。仓库只使用原创代码、程序化几何体和允许使用的第三方依赖。
+>
+> **Project status:** The current version is a runnable vertical slice, not a commercial game or a copy of an existing game series. The repository uses original code, procedural geometry, and permitted third-party dependencies only.
 
-## 当前状态
-## Current Status
+[快速运行](#快速运行) · [操作方式](#操作方式) · [架构说明](docs/ARCHITECTURE.md) · [路线图](docs/ROADMAP.md) · [个人主页](https://garry-tang-274.github.io)
 
-当前提交提供一个可运行的垂直切片：第一人称移动、鼠标观察、射击、换弹、敌人 AI、命中与击杀反馈、生命值、计分、据点区域和简化载具驾驶。
+[Quick start](#快速运行) · [Controls](#操作方式) · [Architecture](docs/ARCHITECTURE.md) · [Roadmap](docs/ROADMAP.md) · [Portfolio](https://garry-tang-274.github.io)
 
-The current commit provides a runnable vertical slice: first-person movement, mouse look, shooting, reloading, enemy AI, hit and kill feedback, health, scoring, a capture zone, and simplified vehicle driving.
+## 当前可以体验什么
+## What Is Playable Now
 
-此前原型曾实现更大的海陆空地图、双阵营 AI、五类枪械、弹药补给和多种载具；这些内容将按路线图逐步迁移、重构和测试，而不是以未经验证的代码一次性堆入仓库。
+当前提交包含第一人称移动、鼠标观察、冲刺、跳跃、射击、换弹、敌人 AI、命中与击杀反馈、生命值、计分、据点区域和简化载具驾驶。
 
-An earlier prototype implemented a larger land-sea-air map, two-faction AI, five weapon classes, ammunition resupply, and multiple vehicles; those features will be migrated, refactored, and tested incrementally according to the roadmap rather than added as an unverified code dump.
+The current build includes first-person movement, mouse look, sprinting, jumping, shooting, reloading, enemy AI, hit and kill feedback, health, scoring, a capture zone, and simplified vehicle driving.
+
+此前实验版本曾探索更大的海陆空地图、双阵营 AI、多武器系统、弹药补给和多类载具。后续功能会按路线图逐项迁移、测试和重构，而不是一次性导入未经验证的代码。
+
+Earlier experiments explored a larger land-sea-air map, two-faction AI, multiple weapon classes, ammunition resupply, and several vehicle types. Future features will be migrated, tested, and refactored incrementally rather than imported as an unverified code dump.
 
 ## 快速运行
 ## Quick Start
 
-在 Windows 上双击 `start_windows.bat`。脚本会检测 Python，并在本地启动静态网页服务器。
+Windows 用户可双击 `start_windows.bat`。脚本会检测 Python，并启动本地静态网页服务器。
 
-On Windows, double-click `start_windows.bat`. The script checks for Python and starts a local static web server.
+Windows users can double-click `start_windows.bat`. The script checks for Python and starts a local static web server.
 
-在 macOS 或 Linux 上执行以下命令。
+macOS 或 Linux 用户执行：
 
-On macOS or Linux, run the following commands.
+macOS or Linux users can run:
 
 ```bash
 chmod +x start_mac_linux.sh
 ./start_mac_linux.sh
 ```
 
-也可以直接执行 Python 启动器。
+也可以直接使用 Python 启动器：
 
-You can also run the Python launcher directly.
+The Python launcher can also be used directly:
 
 ```bash
 python scripts/start_server.py
 ```
 
-启动后浏览器会打开本地地址。首次加载需要联网从 CDN 获取 Three.js；游戏代码和美术几何体均保存在本仓库中。
+首次加载需要联网从 CDN 获取 Three.js；游戏逻辑与程序化美术几何体保存在仓库中。
 
-After startup, the browser opens a local address. The first load requires internet access to obtain Three.js from a CDN; the game logic and procedural geometry are stored in this repository.
+The first load requires internet access to obtain Three.js from a CDN; the game logic and procedural art geometry are stored in the repository.
 
-## 操作
+## 操作方式
 ## Controls
 
-| 中文操作 | English Action | 按键 / Key |
+| 中文操作 | English action | 按键 / Key |
 |---|---|---|
 | 移动 | Move | W / A / S / D |
 | 冲刺 | Sprint | Shift |
@@ -61,6 +70,17 @@ After startup, the browser opens a local address. The first load requires intern
 | 换弹 | Reload | R |
 | 进入或离开载具 | Enter or exit vehicle | E |
 | 释放鼠标 | Release pointer lock | Esc |
+
+## 设计取舍
+## Design Choices
+
+项目不使用构建工具，便于初学者直接阅读和运行。程序化几何体替代外部模型，以降低版权风险和资源依赖。
+
+The project avoids build tooling so beginners can read and run it directly. Procedural geometry replaces external models to reduce copyright risk and asset dependencies.
+
+当前 AI 使用轻量状态逻辑，碰撞与载具物理也是近似实现。代码优先保证可理解性、快速迭代和明确边界，而不是追求写实模拟。
+
+The current AI uses lightweight state logic, while collision and vehicle physics are approximate. The code prioritizes understandability, rapid iteration, and explicit boundaries over realistic simulation.
 
 ## 项目结构
 ## Project Structure
@@ -82,47 +102,28 @@ battlefield-web-fps-prototype/
 └─ README.md
 ```
 
-`index.html` 定义页面、HUD 与双语界面文本；`src/game.js` 包含场景、输入、敌人、射击、据点和载具逻辑；`src/style.css` 负责 HUD 与启动界面；`scripts/start_server.py` 提供零依赖本地服务器。
-
-`index.html` defines the page, HUD, and bilingual interface text; `src/game.js` contains scene, input, enemy, shooting, objective, and vehicle logic; `src/style.css` controls the HUD and start screen; `scripts/start_server.py` provides a dependency-free local server.
-
-## 技术选择
-## Technical Choices
-
-项目使用原生 JavaScript 和 Three.js，不依赖构建工具，便于初学者直接阅读和运行。程序化几何体替代外部模型，以减少版权与资源依赖。
-
-The project uses vanilla JavaScript and Three.js without a build tool so that beginners can read and run it directly. Procedural geometry replaces external models to reduce copyright and asset dependencies.
-
-当前 AI 使用轻量状态逻辑，而不是导航网格或行为树。当前碰撞与载具物理同样是近似实现，因此代码强调可理解性和迭代速度，而非真实模拟。
-
-The current AI uses lightweight state logic rather than a navigation mesh or behavior tree. Collision and vehicle physics are also approximate, so the code prioritizes understandability and iteration speed over realistic simulation.
-
 ## 已知限制
 ## Known Limitations
 
-当前版本没有在线多人同步、完整刚体物理、复杂寻路、骨骼动画、写实美术、存档系统或移动端触控。
+当前版本没有在线多人同步、完整刚体物理、复杂寻路、骨骼动画、写实美术、存档系统或移动端触控。敌人在障碍附近可能选择不理想的路径，载具只提供简化驾驶体验。
 
-The current version does not include online multiplayer synchronization, full rigid-body physics, complex pathfinding, skeletal animation, realistic art, a save system, or mobile touch controls.
-
-敌人可能在障碍附近选择不理想的路径，载具仅提供简化驾驶体验，且 Three.js 目前通过公共 CDN 加载。
-
-Enemies may choose imperfect paths near obstacles, vehicles provide only simplified handling, and Three.js is currently loaded through a public CDN.
+The current version does not include online multiplayer synchronization, full rigid-body physics, complex pathfinding, skeletal animation, realistic art, a save system, or mobile touch controls. Enemies may choose imperfect paths near obstacles, and vehicles provide simplified handling only.
 
 ## 后续工作
 ## Future Work
 
-后续优先级包括：恢复多武器系统、加入弹药补给、扩展双阵营 AI、迁移坦克与飞行载具、增加自动化测试，并将静态演示部署到 GitHub Pages。
+下一阶段优先恢复多武器系统与弹药补给，扩展双阵营 AI，迁移坦克和飞行载具，加入自动化测试，并部署静态试玩页面。
 
-Next priorities include restoring the multi-weapon system, adding ammunition resupply, expanding two-faction AI, migrating tanks and aircraft, adding automated tests, and deploying the static demo to GitHub Pages.
+The next priorities are restoring multiple weapon classes and ammunition resupply, expanding two-faction AI, migrating tanks and aircraft, adding automated tests, and deploying a static playable page.
 
-详细计划见 `docs/ROADMAP.md`。
+详细计划见 [路线图](docs/ROADMAP.md)。
 
-See `docs/ROADMAP.md` for the detailed plan.
+See the [roadmap](docs/ROADMAP.md) for details.
 
 ## 贡献与许可
 ## Contributing and License
 
-欢迎通过 Issue 报告可复现的问题，或通过 Pull Request 提交范围明确的改进。提交前请阅读 `CONTRIBUTING.md`。
+欢迎通过 Issue 报告可复现问题，或通过 Pull Request 提交范围明确的改进。提交前请阅读 `CONTRIBUTING.md`。
 
 Reproducible issues and focused pull requests are welcome. Read `CONTRIBUTING.md` before submitting changes.
 
