@@ -11,6 +11,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
+class GameHandler(http.server.SimpleHTTPRequestHandler):
+    """Always revalidate development files after an update."""
+
+    def end_headers(self) -> None:
+        self.send_header("Cache-Control", "no-cache, must-revalidate")
+        super().end_headers()
+
+
 def find_port(start: int = 8000, end: int = 8100) -> int:
     """寻找可用端口。 / Find an available port."""
     for port in range(start, end + 1):
@@ -26,7 +34,7 @@ def find_port(start: int = 8000, end: int = 8100) -> int:
 def main() -> None:
     """运行服务器并打开浏览器。 / Run the server and open the browser."""
     port = find_port()
-    handler = lambda *args, **kwargs: http.server.SimpleHTTPRequestHandler(  # noqa: E731
+    handler = lambda *args, **kwargs: GameHandler(  # noqa: E731
         *args, directory=str(ROOT), **kwargs
     )
     url = f"http://127.0.0.1:{port}/"

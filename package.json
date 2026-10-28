@@ -1,0 +1,12 @@
+{
+  "name": "archipelago-frontline",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Build-free single-player combined-arms FPS",
+  "scripts": {
+    "start": "python scripts/start_server.py",
+    "test": "node --test tests/*.test.js",
+    "check": "node scripts/check.mjs"
+  }
+}

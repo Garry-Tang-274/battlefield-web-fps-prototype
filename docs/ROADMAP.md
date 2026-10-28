@@ -1,37 +1,25 @@
-# 路线图
-# Roadmap
+# 路线图 / Roadmap
 
-## 第一阶段：稳定垂直切片
-## Phase 1: Stabilize the Vertical Slice
+## 已完成：可反复游玩的单人据点战 / Complete: replayable solo conquest
 
-完善碰撞、死亡重生、输入异常处理、性能统计和可复现错误报告。
+v0.2.0 已实现部署、五武器战斗、碰撞、手雷、程序化音效、双方 AI、三个据点、侦察车、补给、重部署、战况与结算。附带靶场、设置保存、输入回归测试和静态在线入口。
 
-Improve collision, death and respawn behavior, abnormal-input handling, performance statistics, and reproducible bug reporting.
+v0.2.0 implements deployment, five-weapon combat, collision, grenades, synthesized audio, opposing AI teams, three objectives, a scout, resupply, redeployment, scoreboard and results. It also includes a firing range, saved settings, input regression tests and a static web entry point.
 
-## 第二阶段：恢复核心战斗内容
-## Phase 2: Restore Core Combat Content
+## 下一步：深化现有玩法 / Next: deepen the current loop
 
-恢复五类武器、独立弹药库存、弹药箱、掉落补给、瞄准、后坐力和程序化音效。
+- 在玩家实测的基础上继续调整武器与鼠标输入；保留可对比的版本和异常输入记录。
+- 改进 AI 的门口通行、协同攻防和掩体探头行为。
+- 增加风格一致的第二张地图、战场细节和更多可交互掩体。
+- 将现有自动化检查接入完整的浏览器 CI。
 
-Restore five weapon classes, independent ammunition inventories, ammunition crates, dropped resupply, aiming, recoil, and procedural audio.
+- Tune weapons and mouse input against real playtests, retaining comparable builds and abnormal-input traces.
+- Improve AI doorway traversal, coordinated objective play and cover peeking.
+- Add a second coherent map, environmental detail and additional interactive cover.
+- Integrate the existing automated checks into full browser CI.
 
-## 第三阶段：联合作战扩展
-## Phase 3: Combined-Arms Expansion
+## 独立的后续项目 / Separate future projects
 
-加入双阵营 AI、坦克、快艇、直升机和战斗机，并将车体运动与武器瞄准分离。
+联网多人需要权威服务器、同步与安全设计；飞行载具需要独立的飞行和关卡设计；移动端需要完整触控方案。这些不是当前版本里尚未接通的按钮。
 
-Add two-faction AI, tanks, boats, helicopters, and aircraft, while separating vehicle-body movement from weapon aiming.
-
-## 第四阶段：工程质量
-## Phase 4: Engineering Quality
-
-引入模块化构建、单元测试、端到端冒烟测试、GitHub Actions、版本发布和 GitHub Pages 演示。
-
-Introduce modular builds, unit tests, end-to-end smoke tests, GitHub Actions, versioned releases, and a GitHub Pages demo.
-
-## 第五阶段：高级系统
-## Phase 5: Advanced Systems
-
-评估导航网格、物理引擎、多人同步和外部原创资产管线；只有在性能和许可条件明确后才引入。
-
-Evaluate navigation meshes, a physics engine, multiplayer synchronization, and an external original-asset pipeline; introduce them only after performance and licensing conditions are clear.
+Online multiplayer needs an authoritative server, synchronization and security design. Aircraft need dedicated flight and level design, and mobile play needs a complete touch scheme. These are future projects rather than disconnected controls in the current build.

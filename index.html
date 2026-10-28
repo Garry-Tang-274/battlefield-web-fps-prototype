@@ -1,40 +1,401 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>群岛前线 / Archipelago Frontline</title>
-  <link rel="stylesheet" href="src/style.css">
-</head>
-<body>
-  <div id="game"></div>
-  <div id="hud" class="hidden">
-    <div id="score">得分 / Score: <span id="scoreValue">0</span></div>
-    <div id="objective">据点 / Objective: <span id="objectiveValue">中立 / Neutral</span></div>
-    <div id="health">生命 / Health: <span id="healthValue">100</span></div>
-    <div id="ammo">弹药 / Ammo: <span id="ammoValue">30 / 120</span></div>
-    <div id="vehicle">状态 / Status: <span id="vehicleValue">步兵 / Infantry</span></div>
-    <div id="crosshair">+</div>
-    <div id="message"></div>
-  </div>
-  <div id="overlay" class="visible">
-    <main class="panel">
-      <p class="eyebrow">联合作战网页原型 / Combined-Arms Web Prototype</p>
-      <h1>群岛前线<br><span>Archipelago Frontline</span></h1>
-      <p>进入一个程序化岛屿训练场，消灭敌人并占领中央据点。靠近车辆后按 E 可进入或离开。</p>
-      <p>Enter a procedural island training ground, eliminate enemies, and capture the central objective. Press E near the vehicle to enter or exit.</p>
-      <div class="controls">
-        <div><b>移动 / Move</b><span>WASD · Shift · Space</span></div>
-        <div><b>战斗 / Combat</b><span>Mouse · Left click · R</span></div>
-        <div><b>载具 / Vehicle</b><span>E · WASD</span></div>
-        <div><b>鼠标 / Pointer</b><span>Esc to release</span></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#101e22" />
+    <meta
+      name="description"
+      content="群岛前线 Archipelago Frontline — 免费单人海岛据点战。五类武器、双方 AI、侦察车与程序化空间音效。"
+    />
+    <title>群岛前线 · ARCHIPELAGO FRONTLINE</title>
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="src/style.css?rev=20261028-r3" />
+  </head>
+  <body>
+    <div id="game" aria-label="三维战场 / 3D battlefield"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <section id="menu" class="screen">
+      <header class="masthead">
+        <a class="brand" href="./" aria-label="群岛前线 / Archipelago Frontline"
+          ><span class="brand-symbol">A<span>F</span></span
+          ><span>群岛前线 <small>ARCHIPELAGO FRONTLINE</small></span></a
+        ><span class="build-label">SINGLE PLAYER <i></i> v0.2</span>
+      </header>
+      <main class="menu-content">
+        <div class="menu-intro">
+          <p class="overline">
+            <span class="line"></span> OPERATION 01 / BREAKWATER
+          </p>
+          <h1>潮线之上，<br />寸土不让<span class="accent">。</span></h1>
+          <p class="english-title">HOLD THE LINE.</p>
+          <p class="intro-copy">
+            夺取群岛的最后一道防线。<br /><span
+              >Capture the islands. Turn the tide.</span
+            >
+          </p>
+          <div class="theatre">
+            <i></i> 北部群岛 / NORTHERN ARCHIPELAGO <span>17:40 LOCAL</span>
+          </div>
+        </div>
+        <div class="deployment-panel">
+          <div class="panel-heading">
+            <span class="overline">作战部署 / DEPLOYMENT</span
+            ><span class="live-dot">离线 AI / SOLO</span>
+          </div>
+          <div
+            class="mode-switch"
+            role="group"
+            aria-label="游戏模式 / Game mode"
+          >
+            <button class="mode active" data-mode="conquest">
+              <b>据点争夺</b><small>CONQUEST · 6 vs 6</small></button
+            ><button class="mode" data-mode="training">
+              <b>自由靶场</b><small>FIRING RANGE</small>
+            </button>
+          </div>
+          <p id="modeDescription" class="mode-copy">
+            控制 A / B / C 据点，消耗敌方增援。<br /><span
+              >Hold the majority. Exhaust enemy tickets.</span
+            >
+          </p>
+          <div class="section-label">
+            <span>首发装备 / STARTING WEAPON</span
+            ><span id="weaponIndex">01 / 05</span>
+          </div>
+          <div id="loadoutOptions" class="loadout-options"></div>
+          <div class="weapon-brief">
+            <div>
+              <h2 id="loadoutName">AR-4</h2>
+              <span id="loadoutType">突击步枪 / ASSAULT RIFLE</span>
+            </div>
+            <div class="weapon-bars" id="weaponBars"></div>
+          </div>
+          <p id="loadoutDescription" class="loadout-description"></p>
+          <div class="deployment-bottom">
+            <label for="difficulty"
+              >交战强度 / DIFFICULTY<select id="difficulty">
+                <option value="recruit">新兵 / RECRUIT</option>
+                <option value="regular" selected>标准 / REGULAR</option>
+                <option value="veteran">老兵 / VETERAN</option>
+              </select></label
+            ><button
+              id="menuSettings"
+              class="icon-button"
+              aria-label="设置 / Settings"
+            >
+              ⚙
+            </button>
+          </div>
+          <button id="startButton" class="primary" disabled>
+            <span>正在准备战场 / PREPARING</span><span>↗</span>
+          </button>
+          <div class="deploy-hint">
+            耳机体验更佳 · 键鼠操作 / Headphones · Mouse & keyboard
+          </div>
+        </div>
+      </main>
+      <footer class="menu-footer">
+        <span>原创程序化世界 / AN ORIGINAL PROCEDURAL WORLD</span
+        ><button id="helpButton" class="text-button">
+          操作指南 / FIELD MANUAL ↗</button
+        ><a
+          href="https://github.com/Garry-Tang-274/battlefield-web-fps-prototype"
+          target="_blank"
+          rel="noopener noreferrer"
+          >GITHUB ↗</a
+        >
+      </footer>
+    </section>
+    <div id="hud" class="hidden">
+      <div class="match-header">
+        <div class="ticket blue">
+          <span>联军 / ALLIED</span><b id="blueTickets">180</b>
+          <div><i id="blueTicketBar"></i></div>
+        </div>
+        <div class="match-center">
+          <span id="matchTime">08:00</span>
+          <div id="pointBadges" class="point-badges"></div>
+          <small id="modeLabel">据点争夺 / CONQUEST</small>
+        </div>
+        <div class="ticket red">
+          <span>守军 / HOSTILE</span><b id="redTickets">180</b>
+          <div><i id="redTicketBar"></i></div>
+        </div>
       </div>
-      <button id="startButton">进入战场 / Enter Battlefield</button>
-      <p class="small">本项目使用原创程序化几何体，不包含任何商业游戏资产。</p>
-      <p class="small">This project uses original procedural geometry and contains no commercial-game assets.</p>
-    </main>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
-  <script src="src/game.js"></script>
-</body>
+      <div id="compass" class="compass"></div>
+      <div id="objectiveMarkers"></div>
+      <div id="crosshair" class="crosshair">
+        <i></i><i></i><i></i><i></i><b></b>
+      </div>
+      <div id="hitmarker" class="hitmarker">╳</div>
+      <div id="damageDirection" class="damage-direction"><i></i></div>
+      <div id="damageVignette" class="damage-vignette"></div>
+      <div id="scope" class="scope hidden">
+        <div class="scope-line horizontal"></div>
+        <div class="scope-line vertical"></div>
+        <div class="scope-center"></div>
+        <span>4× / S-82</span>
+      </div>
+      <div id="captureStatus" class="capture-status hidden">
+        <span id="captureLabel"></span>
+        <div><i id="captureBar"></i></div>
+      </div>
+      <div class="kill-feed" id="killFeed" aria-live="polite"></div>
+      <div id="scorePop" class="score-pop"></div>
+      <div id="message" class="message" role="status"></div>
+      <div id="interaction" class="interaction hidden">
+        <kbd>E</kbd><span></span>
+      </div>
+      <div class="lower-left">
+        <div class="minimap-frame">
+          <canvas
+            id="minimap"
+            width="224"
+            height="224"
+            aria-label="战术地图 / Tactical map"
+          ></canvas
+          ><span>N</span><b>北部群岛 / ARCHIPELAGO</b>
+        </div>
+        <div class="vitals">
+          <div>
+            <span class="health-symbol">+</span><b id="healthValue">100</b
+            ><span id="lifeState">步兵 / INFANTRY</span>
+          </div>
+          <div class="health-track"><i id="healthBar"></i></div>
+          <div class="stamina-track"><i id="staminaBar"></i></div>
+        </div>
+      </div>
+      <div class="lower-right">
+        <div class="weapon-name">
+          <b id="weaponName">AR-4</b><span id="fireMode">全自动 / AUTO</span>
+        </div>
+        <div class="ammunition">
+          <strong id="ammoValue">30</strong
+          ><span>/ <b id="reserveValue">180</b></span>
+        </div>
+        <div id="reloadStatus" class="reload-status"><span></span><i></i></div>
+        <div id="weaponSlots" class="weapon-slots"></div>
+        <div class="equipment">
+          <span>G <b id="grenadeCount">2</b> 手雷 / FRAG</span
+          ><span>V 近战 / MELEE</span>
+        </div>
+      </div>
+      <div id="scoreboard" class="scoreboard hidden">
+        <p class="overline">战况总览 / SITUATION REPORT</p>
+        <h2>潮线行动 <span>OPERATION BREAKWATER</span></h2>
+        <div class="rosters">
+          <section>
+            <h3 class="blue">联军 / ALLIED <small>K / D</small></h3>
+            <div id="blueRoster"></div>
+          </section>
+          <section>
+            <h3 class="red">守军 / HOSTILE <small>K / D</small></h3>
+            <div id="redRoster"></div>
+          </section>
+        </div>
+        <p id="scoreboardScore"></p>
+      </div>
+      <div id="bottomHint" class="bottom-hint">
+        WASD 移动 / MOVE　⇧ 冲刺 / SPRINT　R 换弹 / RELOAD　ESC 暂停 / PAUSE
+      </div>
+      <button id="pauseButton" class="hud-pause" aria-label="暂停 / Pause">
+        Ⅱ
+      </button>
+      <div id="performance" class="performance hidden"></div>
+    </div>
+    <section id="pauseMenu" class="screen overlay hidden">
+      <div class="dialog pause-dialog">
+        <p class="overline">TACTICAL PAUSE</p>
+        <h2>暂离火线<span>PAUSED</span></h2>
+        <p>战场已暂停。 / The battlefield is paused.</p>
+        <button id="resumeButton" class="primary">
+          <span>继续战斗 / RESUME</span><span>↗</span></button
+        ><button id="windowedButton" class="secondary hidden">
+          窗口操作继续 / WINDOWED CONTROLS</button
+        ><button id="pauseSettings" class="secondary">设置 / SETTINGS</button
+        ><button id="pauseHelp" class="secondary">
+          操作指南 / FIELD MANUAL</button
+        ><button id="restartButton" class="text-button">
+          重新部署 / RESTART MATCH</button
+        ><button id="returnButton" class="text-button">
+          返回主菜单 / RETURN TO MENU
+        </button>
+      </div>
+    </section>
+    <section id="settingsMenu" class="screen overlay hidden">
+      <div class="dialog settings-dialog">
+        <div class="dialog-header">
+          <div>
+            <p class="overline">PERSONAL CONFIGURATION</p>
+            <h2>作战设置 <span>SETTINGS</span></h2>
+          </div>
+          <button
+            class="close-button"
+            data-close="settingsMenu"
+            aria-label="关闭设置 / Close settings"
+          >
+            ×
+          </button>
+        </div>
+        <div class="setting-list">
+          <label
+            >总音量 / MASTER VOLUME <output id="volumeOutput"></output
+            ><input
+              id="volume"
+              type="range"
+              min="0"
+              max="1"
+              step="0.05" /></label
+          ><label
+            >鼠标灵敏度 / SENSITIVITY <output id="sensitivityOutput"></output
+            ><input
+              id="sensitivity"
+              type="range"
+              min="0.2"
+              max="2.5"
+              step="0.1" /></label
+          ><label
+            >视野 / FIELD OF VIEW <output id="fovOutput"></output
+            ><input id="fov" type="range" min="65" max="105" step="1" /></label
+          ><label
+            >镜头震动 / CAMERA SHAKE <output id="shakeOutput"></output
+            ><input
+              id="shake"
+              type="range"
+              min="0"
+              max="1"
+              step="0.05" /></label
+          ><label
+            >界面大小 / HUD SCALE <output id="hudScaleOutput"></output
+            ><input
+              id="hudScale"
+              type="range"
+              min="0.85"
+              max="1.2"
+              step="0.05" /></label
+          ><label class="setting-row"
+            >画面质量 / QUALITY<select id="quality">
+              <option value="high">高 / HIGH</option>
+              <option value="low">性能优先 / PERFORMANCE</option>
+            </select></label
+          ><label class="setting-row"
+            >原始鼠标输入 / RAW MOUSE INPUT<input
+              id="rawInput"
+              type="checkbox" /></label
+          ><label class="setting-row"
+            >反转纵轴 / INVERT Y<input id="invertY" type="checkbox" /></label
+          ><label class="setting-row"
+            >命中提示音 / HIT CONFIRMATION<input
+              id="hitSound"
+              type="checkbox" /></label
+          ><label class="setting-row"
+            >显示帧率 / SHOW FPS<input id="showFps" type="checkbox"
+          /></label>
+        </div>
+        <p class="settings-note">自动保存到本机 / Saved on this device</p>
+        <button id="resetSettings" class="secondary">
+          恢复默认 / RESET DEFAULTS
+        </button>
+      </div>
+    </section>
+    <section id="helpMenu" class="screen overlay hidden">
+      <div class="dialog help-dialog">
+        <div class="dialog-header">
+          <div>
+            <p class="overline">FIELD MANUAL / 01</p>
+            <h2>拿起武器 <span>CONTROLS</span></h2>
+          </div>
+          <button
+            class="close-button"
+            data-close="helpMenu"
+            aria-label="关闭指南 / Close manual"
+          >
+            ×
+          </button>
+        </div>
+        <div class="manual-grid">
+          <div><kbd>W A S D</kbd><span>移动 / Move</span></div>
+          <div><kbd>鼠标 / Mouse</kbd><span>观察 / Look</span></div>
+          <div><kbd>左键 / LMB</kbd><span>射击 / Fire</span></div>
+          <div><kbd>右键 / RMB</kbd><span>按住瞄准 / Hold to aim</span></div>
+          <div><kbd>SHIFT</kbd><span>冲刺 / Sprint</span></div>
+          <div><kbd>SPACE</kbd><span>跳跃 / Jump</span></div>
+          <div><kbd>C / CTRL</kbd><span>按住蹲伏 / Hold to crouch</span></div>
+          <div><kbd>R</kbd><span>换弹 / Reload</span></div>
+          <div>
+            <kbd>1 – 5 / 滚轮 / Wheel</kbd><span>切换武器 / Switch weapon</span>
+          </div>
+          <div><kbd>G</kbd><span>投掷手雷 / Throw grenade</span></div>
+          <div><kbd>V</kbd><span>近战 / Melee</span></div>
+          <div><kbd>E</kbd><span>载具或补给 / Vehicle or resupply</span></div>
+          <div><kbd>M</kbd><span>战术地图 / Tactical map</span></div>
+          <div><kbd>TAB</kbd><span>按住查看战况 / Hold scoreboard</span></div>
+          <div><kbd>ESC / P</kbd><span>暂停 / Pause</span></div>
+        </div>
+        <p class="manual-note">
+          留在据点圈内即可占领；双方同时在场时停止占领。控制更多据点会消耗敌方增援。<br /><span
+            >Stay inside a point to capture it. Contested points freeze. Hold
+            the majority to drain enemy tickets.</span
+          >
+        </p>
+        <p class="manual-note">
+          侦察车：W/S 油门与倒车，A/D 转向，空格制动，左键机枪，E 下车。<br /><span
+            >Scout: W/S throttle & reverse, A/D steering, Space brake, LMB
+            turret, E exit.</span
+          >
+        </p>
+      </div>
+    </section>
+    <section id="deathScreen" class="screen death-overlay hidden">
+      <div class="death-content">
+        <p class="overline">SIGNAL LOST</p>
+        <h2>倒下，不是终点<span>REDEPLOYING</span></h2>
+        <p id="deathCause"></p>
+        <strong id="respawnTimer">5</strong
+        ><label
+          >部署位置 / DEPLOYMENT<select id="spawnSelect">
+            <option value="base">联军基地 / ALLIED BASE</option>
+          </select></label
+        ><button id="redeployButton" class="primary" disabled>
+          等待增援 / AWAITING REINFORCEMENT
+        </button>
+      </div>
+    </section>
+    <section id="endScreen" class="screen overlay hidden">
+      <div class="dialog result-dialog">
+        <p class="overline" id="resultOverline">OPERATION COMPLETE</p>
+        <h2 id="resultTitle"></h2>
+        <p id="resultReason"></p>
+        <div id="resultStats" class="result-stats"></div>
+        <p id="bestRecord" class="record"></p>
+        <button id="playAgain" class="primary">
+          <span>再次出击 / PLAY AGAIN</span><span>↗</span></button
+        ><button id="endReturn" class="secondary">
+          返回主菜单 / RETURN TO MENU
+        </button>
+      </div>
+    </section>
+    <section id="errorScreen" class="screen overlay hidden">
+      <div class="dialog">
+        <p class="overline">CONNECTION INTERRUPTED</p>
+        <h2>战场暂未就绪<span>UNABLE TO START</span></h2>
+        <p id="errorMessage"></p>
+        <button id="retryButton" class="primary">重新加载 / RELOAD</button>
+      </div>
+    </section>
+    <div id="portraitNotice">
+      请横屏并使用键鼠游玩。<span
+        >Landscape display, mouse & keyboard recommended.</span
+      >
+    </div>
+    <noscript
+      >此游戏需要 JavaScript。 / This game requires JavaScript.</noscript
+    >
+    <script src="vendor/three.min.js"></script>
+    <script type="module" src="src/game.js?rev=20261028-r3"></script>
+  </body>
 </html>

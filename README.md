@@ -1,132 +1,111 @@
-# 群岛前线：联合作战网页 FPS 原型
-# Archipelago Frontline: Combined-Arms Web FPS Prototype
+# 群岛前线 · Archipelago Frontline
 
-![Status](https://img.shields.io/badge/status-playable%20prototype-2f81f7)
-![Three.js](https://img.shields.io/badge/Three.js-browser%20runtime-black)
-![Language](https://img.shields.io/badge/docs-bilingual-d8aa56)
-![License](https://img.shields.io/badge/license-MIT-3fb950)
+潮线行动 / Operation Breakwater — v0.2.0
 
-这是一个使用原生 JavaScript 与 Three.js 构建的浏览器端第一人称射击原型，用于验证步兵、AI 敌人、据点争夺与简化载具能否形成轻量但完整的联合作战循环。
+[在线试玩 / Play in your browser](https://garry-tang-274.github.io/battlefield-web-fps-prototype/) · [操作与运行 / Controls & setup](#开始游戏--start-playing) · [架构 / Architecture](docs/ARCHITECTURE.md) · [更新记录 / Changelog](CHANGELOG.md)
 
-This is a browser-based first-person shooter prototype built with vanilla JavaScript and Three.js. It tests whether infantry combat, AI enemies, capture objectives, and simplified vehicles can form a lightweight but complete combined-arms loop.
+一个可以直接在浏览器运行的单人第一人称射击游戏。你与五名联军 AI 共同争夺海岛上的三个据点，对抗六名守军；也可以进入无来袭火力的靶场练习。
 
-> **项目状态：** 当前版本是可运行的垂直切片，而不是商业游戏或任何现有游戏系列的复制品。仓库只使用原创代码、程序化几何体和允许使用的第三方依赖。
->
-> **Project status:** The current version is a runnable vertical slice, not a commercial game or a copy of an existing game series. The repository uses original code, procedural geometry, and permitted third-party dependencies only.
+A single-player browser FPS. Join five allied AI soldiers against six defenders across three island objectives, or learn the weapons in a peaceful firing range.
 
-[快速运行](#快速运行) · [操作方式](#操作方式) · [架构说明](docs/ARCHITECTURE.md) · [路线图](docs/ROADMAP.md) · [个人主页](https://garry-tang-274.github.io)
+![群岛前线部署界面 / Archipelago Frontline deployment](assets/screenshots/deployment.jpg)
 
-[Quick start](#快速运行) · [Controls](#操作方式) · [Architecture](docs/ARCHITECTURE.md) · [Roadmap](docs/ROADMAP.md) · [Portfolio](https://garry-tang-274.github.io)
+## 这次升级 / The v0.2 upgrade
 
-## 当前可以体验什么
-## What Is Playable Now
+- **完整据点战：** 三个据点、争夺冻结、增援消耗、三档难度、死亡重部署、实时战况与结算。单局最长 8 分钟。
+- **Complete conquest:** three objectives, contested captures, ticket bleed, three difficulties, redeployment, live scoreboard and match results. Matches last up to eight active minutes.
+- **五类武器：** AR-4 突击步枪、VX-9 冲锋枪、M12 泵动霰弹枪、S-82 精确射手步枪、P-17 手枪；独立弹药、按住瞄准、四倍镜、后坐力、散布、距离衰减与爆头。
+- **Five weapons:** assault rifle, SMG, pump shotgun, scoped marksman rifle and pistol; independent ammunition, ADS, a 4× optic, recoil, spread, damage falloff and headshots.
+- **动作反馈：** 枪口焰、曳光、抛壳、弹痕、命中确认、受击方向、换弹与切枪动作、冲刺体力、蹲伏、跳跃缓冲、落地反馈和近战。
+- **Responsive feedback:** muzzle flashes, tracers, casings, impact marks, hit confirmation, damage direction, reload/switch animations, sprint stamina, crouching, buffered jumps, landing feedback and melee.
+- **可交互战场：** 有遮挡的双方 AI、绕障碍导航、受压寻找掩体、重力弹跳手雷、爆炸桶、补给箱，以及带制动、碰撞、独立机枪瞄准、热量和耐久的侦察车。
+- **Interactive battlefield:** occlusion-aware AI, obstacle navigation, cover seeking under fire, bouncing grenades, explosive barrels, supply crates, and a scout vehicle with brakes, collisions, independent turret aim, heat and health.
+- **原创程序化音效：** 五种枪声、脚步、机械操作、命中提示与爆炸；按声源方向、距离和远处低通处理战场声音。
+- **Original synthesized audio:** distinct weapon reports, footsteps, handling, hit confirmation and explosions, with directional panning, distance attenuation and distant low-pass filtering.
+- **长期可用：** 设置与本机最佳成绩保存、暂停与失焦保护、画质和视野设置、低动态效果支持，所有运行资源都保存在仓库。
+- **Self-contained:** persistent settings and personal records, safe pause/focus handling, quality/FOV controls, reduced-motion support, and all runtime assets included in the repository.
 
-当前提交包含第一人称移动、鼠标观察、冲刺、跳跃、射击、换弹、敌人 AI、命中与击杀反馈、生命值、计分、据点区域和简化载具驾驶。
+## 开始游戏 / Start playing
 
-The current build includes first-person movement, mouse look, sprinting, jumping, shooting, reloading, enemy AI, hit and kill feedback, health, scoring, a capture zone, and simplified vehicle driving.
+推荐使用带硬件加速的桌面 Chrome 或 Edge，配合键盘、鼠标和耳机。首次点击“部署出击”后开启声音并请求锁定鼠标。
 
-此前实验版本曾探索更大的海陆空地图、双阵营 AI、多武器系统、弹药补给和多类载具。后续功能会按路线图逐项迁移、测试和重构，而不是一次性导入未经验证的代码。
+Use desktop Chrome or Edge with hardware acceleration, a keyboard, mouse and headphones. Deploying unlocks audio and requests pointer capture.
 
-Earlier experiments explored a larger land-sea-air map, two-faction AI, multiple weapon classes, ammunition resupply, and several vehicle types. Future features will be migrated, tested, and refactored incrementally rather than imported as an unverified code dump.
+### 本地运行 / Run locally
 
-## 快速运行
-## Quick Start
+Windows 双击 `start_windows.bat`；macOS / Linux 运行 `sh start_mac_linux.sh`。这些启动器只需要 Python 3，不需要安装 Node.js 或下载游戏依赖。
 
-Windows 用户可双击 `start_windows.bat`。脚本会检测 Python，并启动本地静态网页服务器。
-
-Windows users can double-click `start_windows.bat`. The script checks for Python and starts a local static web server.
-
-macOS 或 Linux 用户执行：
-
-macOS or Linux users can run:
-
-```bash
-chmod +x start_mac_linux.sh
-./start_mac_linux.sh
-```
-
-也可以直接使用 Python 启动器：
-
-The Python launcher can also be used directly:
+On Windows, double-click `start_windows.bat`. On macOS/Linux, run `sh start_mac_linux.sh`. The launchers require only Python 3; Node.js and dependency downloads are not needed to play.
 
 ```bash
 python scripts/start_server.py
 ```
 
-首次加载需要联网从 CDN 获取 Three.js；游戏逻辑与程序化美术几何体保存在仓库中。
+浏览器会自动打开本地地址。不要直接以 `file://` 打开 `index.html`，因为浏览器会限制 ES 模块加载。下载整个仓库后，本地游戏不再依赖 CDN。
 
-The first load requires internet access to obtain Three.js from a CDN; the game logic and procedural art geometry are stored in the repository.
+The launcher opens the local URL automatically. Do not open `index.html` through `file://`, which restricts ES modules. After downloading the repository, local play needs no CDN connection.
 
-## 操作方式
-## Controls
+### 操作 / Controls
 
-| 中文操作 | English action | 按键 / Key |
-|---|---|---|
-| 移动 | Move | W / A / S / D |
-| 冲刺 | Sprint | Shift |
-| 跳跃 | Jump | Space |
-| 观察 | Look | Mouse |
-| 射击 | Fire | Left mouse button |
-| 换弹 | Reload | R |
-| 进入或离开载具 | Enter or exit vehicle | E |
-| 释放鼠标 | Release pointer lock | Esc |
+| 动作 / Action                  | 按键 / Key         |
+| ------------------------------ | ------------------ |
+| 移动 / Move                    | W A S D            |
+| 冲刺 / Sprint                  | Shift              |
+| 跳跃 / Jump                    | Space              |
+| 按住蹲伏 / Hold crouch         | C / Ctrl           |
+| 射击 / Fire                    | 鼠标左键 / LMB     |
+| 按住瞄准 / Hold ADS            | 鼠标右键 / RMB     |
+| 换弹 / Reload                  | R                  |
+| 切换武器 / Switch weapon       | 1–5 / 滚轮 / Wheel |
+| 投掷手雷 / Throw grenade       | G                  |
+| 近战 / Melee                   | V                  |
+| 载具、补给 / Vehicle, resupply | E                  |
+| 战术地图 / Tactical map        | M                  |
+| 按住查看战况 / Hold scoreboard | Tab                |
+| 暂停 / Pause                   | Esc / P            |
 
-## 设计取舍
-## Design Choices
+侦察车使用 W/S 加速或倒车、A/D 转向、Space 制动、左键机枪、E 下车。武器瞄准与车体朝向独立。机枪过热后需要冷却。
 
-项目不使用构建工具，便于初学者直接阅读和运行。程序化几何体替代外部模型，以降低版权风险和资源依赖。
+In the scout, use W/S for throttle/reverse, A/D to steer, Space to brake, LMB for the turret, and E to exit. Turret aim is independent of steering; an overheated weapon must cool.
 
-The project avoids build tooling so beginners can read and run it directly. Procedural geometry replaces external models to reduce copyright risk and asset dependencies.
+如果内嵌浏览器无法锁定鼠标，暂停界面会提供**窗口操作**：右键拖动观察、Q 切换瞄准，方向键也可调整视角。标准桌面操作仍以锁定鼠标为默认方式。
 
-当前 AI 使用轻量状态逻辑，碰撞与载具物理也是近似实现。代码优先保证可理解性、快速迭代和明确边界，而不是追求写实模拟。
+If an embedded browser cannot capture the pointer, the pause screen offers **windowed controls**: RMB-drag to look, Q to toggle ADS, or arrow keys to turn. Captured-pointer controls remain the desktop default.
 
-The current AI uses lightweight state logic, while collision and vehicle physics are approximate. The code prioritizes understandability, rapid iteration, and explicit boundaries over realistic simulation.
+### 赢得据点战 / Win conquest
 
-## 项目结构
-## Project Structure
+留在据点的地面标记圈内即可占领，双方同时在圈内时暂停进度。控制更多据点会消耗对方增援；击杀也消耗增援。阵亡后等待 5 秒，可选择基地或未受争夺的友方据点重新部署。危险或失守的据点会改用基地出生。
 
-```text
-battlefield-web-fps-prototype/
-├─ index.html
-├─ src/
-│  ├─ game.js
-│  └─ style.css
-├─ scripts/
-│  └─ start_server.py
-├─ docs/
-│  ├─ ARCHITECTURE.md
-│  └─ ROADMAP.md
-├─ start_windows.bat
-├─ start_mac_linux.sh
-├─ THIRD_PARTY_NOTICE.md
-└─ README.md
+Stay inside an objective ring to capture it; opposing presence freezes progress. Holding the majority drains enemy tickets, and casualties also cost tickets. After death, wait five seconds and redeploy at base or a secured friendly point. Unsafe/lost spawn choices return you to base.
+
+绿色补给箱补满生命、备用弹药和手雷；仍需自行换弹。脱离受击 6 秒后，步兵生命会逐渐恢复。
+
+Green supply crates restore health, reserve ammo and grenades; reload your magazine yourself. Infantry health regenerates after six seconds without damage.
+
+## 开发与检查 / Development and checks
+
+源代码为原生 ES 模块，无构建步骤。Three.js 0.128.0 随仓库附带，MIT 许可见 `vendor/THREE-LICENSE.txt`。
+
+The source uses native ES modules with no build step. Three.js 0.128.0 is bundled under its MIT license in `vendor/THREE-LICENSE.txt`.
+
+开发检查需要 Node.js 22 或更新版本：
+
+Development checks require Node.js 22 or newer:
+
+```bash
+npm test
+npm run check
+python -m py_compile scripts/start_server.py
 ```
 
-## 已知限制
-## Known Limitations
+测试覆盖碰撞防穿透、射线遮挡、弹药守恒、伤害衰减、据点规则、导航和快速鼠标输入。运行诊断可通过地址后加 `?debug=1` 或控制台 `window.frontline.snapshot()` 读取；诊断为只读，数据不上传。
 
-当前版本没有在线多人同步、完整刚体物理、复杂寻路、骨骼动画、写实美术、存档系统或移动端触控。敌人在障碍附近可能选择不理想的路径，载具只提供简化驾驶体验。
+Tests cover movement tunnelling, ray occlusion, ammo conservation, damage falloff, capture rules, navigation and fast mouse input. Read diagnostics using `?debug=1` or `window.frontline.snapshot()` in the console. Diagnostics are read-only and stay on the device.
 
-The current version does not include online multiplayer synchronization, full rigid-body physics, complex pathfinding, skeletal animation, realistic art, a save system, or mobile touch controls. Enemies may choose imperfect paths near obstacles, and vehicles provide simplified handling only.
+## 实现边界 / Implementation scope
 
-## 后续工作
-## Future Work
+这是完整的单人对战版本，使用原创低多边形美术和自定义轻量物理。步枪子弹采用有遮挡与距离衰减的即时射线，手雷采用重力与弹跳模拟；角色与车辆不是通用刚体模拟。当前没有联网多人、可飞行载具、移动端触控或可摧毁建筑。
 
-下一阶段优先恢复多武器系统与弹药补给，扩展双阵营 AI，迁移坦克和飞行载具，加入自动化测试，并部署静态试玩页面。
+This is a complete single-player match experience with original low-poly art and custom lightweight physics. Gunfire uses occluded hitscan with range falloff; grenades simulate gravity and bounces. Characters and vehicles are not general rigid bodies. Online multiplayer, flyable aircraft, mobile touch controls and destructible buildings are not implemented.
 
-The next priorities are restoring multiple weapon classes and ammunition resupply, expanding two-faction AI, migrating tanks and aircraft, adding automated tests, and deploying a static playable page.
-
-详细计划见 [路线图](docs/ROADMAP.md)。
-
-See the [roadmap](docs/ROADMAP.md) for details.
-
-## 贡献与许可
-## Contributing and License
-
-欢迎通过 Issue 报告可复现问题，或通过 Pull Request 提交范围明确的改进。提交前请阅读 `CONTRIBUTING.md`。
-
-Reproducible issues and focused pull requests are welcome. Read `CONTRIBUTING.md` before submitting changes.
-
-本项目采用 MIT 许可证；Three.js 的第三方说明见 `THIRD_PARTY_NOTICE.md`。
-
-This project is licensed under the MIT License; third-party information for Three.js is listed in `THIRD_PARTY_NOTICE.md`.
+[路线图 / Roadmap](docs/ROADMAP.md) · [贡献 / Contributing](CONTRIBUTING.md) · [第三方许可 / Third-party notices](THIRD_PARTY_NOTICE.md) · [MIT License](LICENSE)
